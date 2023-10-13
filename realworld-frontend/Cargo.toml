@@ -1,0 +1,31 @@
+[package]
+name        = "realworld-frontend"
+description = "RealWorld frontend implementation in Rust"
+version     = "0.1.0"
+# edition       = { workspace = true }
+# authors       = { workspace = true }
+# license       = { workspace = true }
+# readme        = { workspace = true }
+# homepage      = { workspace = true }
+# repository    = { workspace = true }
+# documentation = { workspace = true }
+# publish       = { workspace = true }
+edition       = "2021"
+authors       = [ "Heiko Seeberger <git@heikoseeberger.de>" ]
+license       = "Apache-2.0"
+readme        = "README.md"
+homepage      = "https://github.com/hseeberger/realworld-frontend"
+repository    = "https://github.com/hseeberger/realworld-frontend"
+documentation = "https://github.com/hseeberger/realworld-frontend"
+publish       = false
+
+[dependencies]
+realworld-backend-client = { path = "../realworld-backend-client" }
+console_error_panic_hook = { workspace = true }
+dioxus                   = { workspace = true }
+dioxus-logger            = { workspace = true }
+dioxus-router            = { workspace = true }
+dioxus-web               = { workspace = true }
+log                      = { workspace = true }
+reqwest                  = { workspace = true }
+serde                    = { workspace = true }
