@@ -1,0 +1,26 @@
+[workspace]
+members  = [ "realworld-backend-client", "realworld-frontend" ]
+resolver = "2"
+
+[workspace.package]
+edition       = "2021"
+authors       = [ "Heiko Seeberger <git@heikoseeberger.de>" ]
+license       = "Apache-2.0"
+readme        = "README.md"
+homepage      = "https://github.com/hseeberger/realworld-frontend"
+repository    = "https://github.com/hseeberger/realworld-frontend"
+documentation = "https://github.com/hseeberger/realworld-frontend"
+publish       = false
+
+[workspace.dependencies]
+anyhow                   = { version = "1.0", features = [ "backtrace" ] }
+console_log              = { version = "1.0" }
+console_error_panic_hook = { version = "0.1" }
+leptos                   = { version = "0.5", features = [ "csr", "nightly" ] }
+leptos_router            = { version = "0.5", features = [ "csr", "nightly" ] }
+log                      = { version = "0.4" }
+reqwest                  = { version = "0.11", features = [ "json", "multipart" ] }
+serde                    = { version = "1.0", features = [ "derive" ] }
+serde_json               = { version = "1.0" }
+serde_with               = { version = "3.4" }
+url                      = { version = "2.4", features = [ "serde" ] }

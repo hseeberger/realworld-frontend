@@ -1,0 +1,22 @@
+[package]
+name          = "realworld-frontend"
+description   = "RealWorld frontend implementation in Rust"
+version       = "0.1.0"
+edition       = { workspace = true }
+authors       = { workspace = true }
+license       = { workspace = true }
+readme        = { workspace = true }
+homepage      = { workspace = true }
+repository    = { workspace = true }
+documentation = { workspace = true }
+publish       = { workspace = true }
+
+[dependencies]
+realworld-backend-client = { path = "../realworld-backend-client" }
+anyhow                   = { workspace = true }
+console_error_panic_hook = { workspace = true }
+console_log              = { workspace = true }
+leptos                   = { workspace = true }
+leptos_router            = { workspace = true }
+log                      = { workspace = true }
+reqwest                  = { workspace = true }
