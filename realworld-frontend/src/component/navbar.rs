@@ -1,23 +1,27 @@
-use leptos::{component, view, IntoView, Show, Signal};
+use leptos::{component, view, Callback, Children, IntoView, Show, Signal};
 use leptos_router::A;
 
 #[component]
-pub fn NavBar(logged_in: Signal<bool>) -> impl IntoView {
+pub fn NavBar(logged_in: Signal<bool>, #[prop(into)] on_logout: Callback<()>) -> impl IntoView {
     view! {
         <nav class="navbar navbar-light">
             <div class="container">
                 <A class="navbar-brand" href="/">conduit</A>
 
                 <ul class="nav navbar-nav pull-xs-right">
-                    <li class="nav-item">
-                        <A class="nav-link" href="/">Home</A>
-                    </li>
+                    <NavItem href="/">Home</NavItem>
 
                     <Show
                         when=move || !logged_in()
-                        fallback=LogOut>
+                        fallback=move || view! {
+                            <NavItem
+                                href="#"
+                                active_class=""
+                                on:click=move |_| on_logout.call(((),))>Logout</NavItem>
+                        }>
 
-                        <LogInSignUp />
+                        <NavItem href="/login">Login</NavItem>
+                        <NavItem href="/register">Register</NavItem>
                     </Show>
                 </ul>
             </div>
@@ -26,23 +30,14 @@ pub fn NavBar(logged_in: Signal<bool>) -> impl IntoView {
 }
 
 #[component]
-fn LogInSignUp() -> impl IntoView {
+fn NavItem(
+    href: &'static str,
+    #[prop(default = "active")] active_class: &'static str,
+    children: Children,
+) -> impl IntoView {
     view! {
         <li class="nav-item">
-            <A class="nav-link" href="/login">Login</A>
-        </li>
-
-        <li class="nav-item">
-            <A class="nav-link" href="/register">Register</A>
-        </li>
-    }
-}
-
-#[component]
-fn LogOut() -> impl IntoView {
-    view! {
-        <li class="nav-item">
-            <A class="nav-link" href="/sign-in">Logout</A>
+            <A class="nav-link" href active_class>{children()}</A>
         </li>
     }
 }

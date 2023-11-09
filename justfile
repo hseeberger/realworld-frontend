@@ -1,5 +1,8 @@
 set shell := ["bash", "-uc"]
 
+# Needed at compile time, actual value only matters for trunk serve/build.
+export BACKEND := "dummy"
+
 check:
 	cargo check --tests
 
@@ -20,5 +23,5 @@ fix:
 
 all: check fmt lint test
 
-run:
-	cd realworld-frontend && trunk serve --port 8090 --open
+run backend="http://localhost:8080":
+	cd realworld-frontend && BACKEND={{backend}} trunk serve --port 8090 --open
