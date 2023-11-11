@@ -7,10 +7,10 @@ check:
 	cargo check --tests
 
 fmt:
-	cargo +nightly fmt
+	cargo fmt
 
 fmt-check:
-	cargo +nightly fmt --check
+	cargo fmt --check
 
 lint:
 	cargo clippy --no-deps -- -D warnings
