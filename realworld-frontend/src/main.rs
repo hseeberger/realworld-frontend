@@ -1,75 +1,62 @@
-#![feature(fn_traits)]
-#![feature(lazy_cell)]
+#[cfg(feature = "ssr")]
+use anyhow::Result;
 
-pub mod component;
-pub mod page;
+#[cfg(feature = "ssr")]
+#[tokio::main]
+async fn main() {
+    use serde_json::json;
+    use std::panic;
+    use time::{format_description::well_known::Rfc3339, OffsetDateTime};
+    use tracing::error;
 
-use crate::{
-    component::NavBar,
-    page::{Home, Login, NotFound, Register},
-};
-use leptos::{component, create_rw_signal, mount_to_body, view, IntoView, Signal, SignalGet, *};
-use leptos_router::{use_navigate, Route, Router, Routes};
-use log::{debug, Level};
-use realworld_backend_client::{apis::configuration::Configuration, models::User};
-use std::sync::LazyLock;
-
-static BACKEND_CONFIG: LazyLock<Configuration> = LazyLock::new(|| {
-    let base_path = env!("BACKEND").to_string();
-    Configuration {
-        base_path,
-        ..Default::default()
+    // If tracing initialization fails, nevertheless emit a structured log event.
+    if let Err(error) = init_tracing() {
+        let now = OffsetDateTime::now_utc().format(&Rfc3339).unwrap();
+        let error = serde_json::to_string(&json!({
+            "timestamp": now,
+            "level": "ERROR",
+            "message": "process exited with ERROR",
+            "error": format!("{error:#}")
+        }));
+        // Not using `eprintln!`, because `tracing_subscriber::fmt` uses stdout by default.
+        println!("{}", error.unwrap());
+        return;
     }
-});
 
-fn main() {
-    console_log::init_with_level(Level::Debug).expect("initialize console log");
-    console_error_panic_hook::set_once();
-    mount_to_body(|| view! { <App/> })
+    // Replace the default panic hook with one that uses structured logging at ERROR level.
+    panic::set_hook(Box::new(|panic| error!(%panic, "process panicked")));
+
+    // Run and log any error.
+    if let Err(error) = run().await {
+        error!(
+            error = format!("{error:#}"),
+            backtrace = %error.backtrace(),
+            "process exited with ERROR"
+        );
+    };
 }
 
-#[component]
-fn App() -> impl IntoView {
-    let user_state = create_rw_signal(None::<User>);
-    let logged_in = Signal::derive(move || user_state.get().is_some());
+#[cfg(feature = "ssr")]
+fn init_tracing() -> Result<()> {
+    use anyhow::Context;
+    use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-    let on_login_register = move |user| {
-        user_state.update(|u| *u = Some(user));
-        use_navigate()("/", Default::default());
-    };
-
-    let on_logout = move |_| {
-        debug!("logged out user {:?}", user_state.get());
-        user_state.update(|u| *u = None);
-        use_navigate()("/", Default::default());
-    };
-
-    view! {
-        <Router>
-            <NavBar logged_in on_logout />
-
-            <main>
-                <Routes>
-                    <Route path="/" view=Home />
-
-                    <Route path="/login" view=move || view! {
-                        <Login on_success=on_login_register />
-                    } />
-
-                    <Route path="/register" view=move || view! {
-                        <Register on_success=on_login_register />
-                    } />
-
-                    <Route path="/*any" view=NotFound />
-                </Routes>
-            </main>
-
-            <footer>
-                <div class="container">
-                    <a href="/" class="logo-font">conduit</a>
-                    <span class="attribution">An interactive learning project from <a href="https://thinkster.io">Thinkster</a>. Code & design licensed under MIT.</span>
-                </div>
-            </footer>
-        </Router>
-    }
+    tracing_subscriber::registry()
+        .with(EnvFilter::from_default_env())
+        .with(fmt::layer().json().flatten_event(true))
+        .try_init()
+        .context("initialize tracing subscriber")
 }
+
+#[cfg(feature = "ssr")]
+async fn run() -> Result<()> {
+    use realworld_frontend::server;
+    use tracing::info;
+
+    info!("starting");
+
+    server::serve().await
+}
+
+#[cfg(not(feature = "ssr"))]
+pub fn main() {}

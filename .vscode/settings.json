@@ -1,5 +1,9 @@
 {
     "rust-analyzer.cargo.extraEnv": {
         "BACKEND": ""
-    }
+    },
+    "rust-analyzer.cargo.features": [
+        "hydrate",
+        "ssr"
+    ]
 }
