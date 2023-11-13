@@ -6,12 +6,10 @@ pub mod app;
 pub mod server;
 
 use realworld_backend_client::apis::configuration::Configuration;
-use std::sync::LazyLock;
-#[cfg(feature = "hydrate")]
-use wasm_bindgen::prelude::wasm_bindgen;
+use std::{env, sync::LazyLock};
 
 static BACKEND_CONFIG: LazyLock<Configuration> = LazyLock::new(|| {
-    let base_path = env!("BACKEND").to_string();
+    let base_path = env!("APP_BACKEND").to_string();
     Configuration {
         base_path,
         ..Default::default()
@@ -19,7 +17,7 @@ static BACKEND_CONFIG: LazyLock<Configuration> = LazyLock::new(|| {
 });
 
 #[cfg(feature = "hydrate")]
-#[wasm_bindgen]
+#[wasm_bindgen::prelude::wasm_bindgen]
 pub fn hydrate() {
     use crate::app::App;
 

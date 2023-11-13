@@ -1,7 +1,7 @@
 set shell := ["bash", "-uc"]
 
 check:
-	BACKEND="dummy" cargo check --features hydrate,ssr --tests
+	APP_BACKEND= cargo check --features hydrate,ssr --tests
 
 fmt:
 	cargo fmt
@@ -10,16 +10,22 @@ fmt-check:
 	cargo fmt --check
 
 lint:
-	BACKEND="dummy" cargo clippy --no-deps -- -D warnings
+	APP_BACKEND= cargo clippy --no-deps -- -D warnings
 
 test:
-	BACKEND="dummy" cargo test
+	APP_BACKEND= cargo test
 
 fix:
-	BACKEND="dummy" cargo fix --allow-dirty --allow-staged
+	APP_BACKEND= cargo fix --allow-dirty --allow-staged
 
 all: check fmt lint test
 
 run backend="http://localhost:8080":
 	cd realworld-frontend && \
-		RUST_LOG=info,realworld_frontend=debug BACKEND={{backend}} cargo leptos serve | jq
+		RUST_LOG=info,realworld_frontend=debug APP_BACKEND={{backend}} cargo leptos serve | jq
+
+docker backend="http://localhost:8080":
+	docker build \
+		-t hseeberger/realworld-frontend \
+		--build-arg "APP_BACKEND={{backend}}" \
+		.
