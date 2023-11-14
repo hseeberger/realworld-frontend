@@ -34,11 +34,9 @@ RUN chown appuser /usr/local/bin/realworld-frontend
 COPY --from=builder /app/site /app/site/
 RUN chown -R appuser /app/site
 USER appuser
-
-ENV LEPTOS_SITE_ADDR="0.0.0.0:80"
+ENV LEPTOS_SITE_ADDR="0.0.0.0:8080"
 ENV LEPTOS_SITE_ROOT="site"
-ENV RUST_LOG="warn,realworld_frontend=debug"
-
+ENV RUST_LOG="realworld_frontend=debug,tower_http=debug,info"
 WORKDIR /app
 ENTRYPOINT ["realworld-frontend"]
-EXPOSE 80/tcp
+EXPOSE 8080/tcp
