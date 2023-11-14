@@ -15,10 +15,8 @@ publish       = false
 [workspace.dependencies]
 anyhow                   = { version = "1.0", features = [ "backtrace" ] }
 axum                     = { version = "0.6", features = [ "http2" ] }
-configured               = { version = "0.7" }
 console_error_panic_hook = { version = "0.1" }
 console_log              = { version = "1.0" }
-humantime-serde          = { version = "1.1" }
 leptos                   = { version = "0.5", features = [ "nightly" ] }
 leptos_axum              = { version = "0.5" }
 leptos_meta              = { version = "0.5", features = [ "nightly" ] }
