@@ -57,4 +57,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
-          build-args: APP_BACKEND=${{ vars.APP_BACKEND }}
+          build-args: APP_BACKEND=https://api.realworld.heikoseeberger.de
