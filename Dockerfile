@@ -8,7 +8,7 @@ RUN \
   toolchain=$(grep channel rust-toolchain.toml | sed -r 's/channel = "(.*)"/\1/') && \
   rustup toolchain install $toolchain && \
   rustup target add --toolchain $toolchain wasm32-unknown-unknown && \
-  cargo install --locked cargo-leptos
+  cargo install cargo-leptos
 RUN \
   --mount=type=cache,target=/build/target/ \
   --mount=type=cache,target=/usr/local/cargo/registry/ \
