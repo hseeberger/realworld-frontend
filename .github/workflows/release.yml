@@ -3,7 +3,7 @@ name: release
 on:
   push:
     tags:
-      - v*
+      - realworld-frontend-v*
 
 jobs:
   relase:
@@ -38,12 +38,19 @@ jobs:
       - name: Run tests
         run: just test
 
+      - name: Determine version
+        id: version
+        run: |
+          ref_name=${{ github.ref_name }}
+          version=${ref_name#realworld-frontend-}
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
       - name: Docker metadata
         uses: docker/metadata-action@v5
         id: meta
         with:
           images: hseeberger/realworld-frontend
-          tags: type=semver,pattern={{version}}
+          tags: type=semver,pattern={{version}},value=${{ steps.version.outputs.version }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
