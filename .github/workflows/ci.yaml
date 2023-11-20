@@ -5,7 +5,8 @@ on:
     branches:
       - main
     tags-ignore:
-      - v*
+      - realworld-frontend-v*
+      - realworld-backend-client-v*
   pull_request:
     branches:
       - main
