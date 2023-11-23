@@ -32,7 +32,7 @@ tower                    = { version = "0.4" }
 tower-http               = { version = "0.4", features = [ "fs", "trace" ] }
 tracing                  = { version = "0.1", default-features = false }
 tracing-subscriber       = { version = "0.3", default-features = false, features = [ "env-filter", "fmt", "json" ] }
-url                      = { version = "2.4", features = [ "serde" ] }
+url                      = { version = "2.5", features = [ "serde" ] }
 
 [profile.wasm-release]
 inherits      = "release"
