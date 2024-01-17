@@ -1190,9 +1190,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_meta"
-version = "0.5.4"
+version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "983bbf829598d275b01e96bd9fca71e4739dd7b9fdf69cb8898b30ebfb124332"
+checksum = "036b4e9b7290e46cc71b3b840bf7f06329651373e8d6dfdb0193ce807ed9d540"
 dependencies = [
  "cfg-if",
  "indexmap 2.1.0",
