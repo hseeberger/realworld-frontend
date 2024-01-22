@@ -1060,9 +1060,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_axum"
-version = "0.5.6"
+version = "0.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "727517aba6e6d912b30842658174669ab0a5164833eab0c12ea48914bc399869"
+checksum = "cbfb557aa186ab4c3a693d3e23402805d879ead5d25096a4ab3fca06ee7688b4"
 dependencies = [
  "axum",
  "cfg-if",
