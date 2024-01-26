@@ -3,11 +3,11 @@ set shell := ["bash", "-uc"]
 check:
 	APP_BACKEND= cargo check --features hydrate,ssr
 
-fmt:
-	cargo fmt
+fmt toolchain="+nightly":
+	cargo {{toolchain}} fmt
 
-fmt-check:
-	cargo fmt --check
+fmt-check toolchain="+nightly":
+	cargo {{toolchain}} fmt --check
 
 lint:
 	APP_BACKEND= cargo clippy --no-deps -- -D warnings
